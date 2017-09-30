@@ -1,17 +1,25 @@
 import Foundation
 import CoreImage
+import simd
 
 public func makePixelSet(width: Int, _ height: Int) -> [Pixel] {
     var pixel = Pixel(red: 0, green: 0, blue: 0)
     var pixels = [Pixel](repeating: pixel, count: width * height)
+    let lower_left_corner = float3(x: -2.0, y: 1.0, z: -1.0)
+    let horizontal = float3(x: 4.0, y: 0, z: 0)
+    let vertical = float3(x: 0, y: -2.0, z: 0)
+    let origin = float3()
     
     DispatchQueue.concurrentPerform(iterations: width) { i in
         for j in 0..<height {
         
-            pixel = Pixel(red: 0,
-                          green: UInt8(Double(i * 255 / width)),
-                          blue: UInt8(Double(j * 255 / height)))
+            let u = Float(i) / Float(width)
+            let v = Float(j) / Float(height)
+            let rayInstanse = ray(origin: origin,
+                        direction: lower_left_corner + u * horizontal + v * vertical)
+            let col = color(for:rayInstanse)
             
+            pixel = Pixel(red: UInt8(col.x * 255), green: UInt8(col.y * 255), blue: UInt8(col.z * 255))
             pixels[i + j * width] = pixel
         }
     }
