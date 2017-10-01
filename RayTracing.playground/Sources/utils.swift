@@ -2,7 +2,9 @@ import Foundation
 import CoreImage
 import simd
 
-public func makePixelSet(width: Int, _ height: Int) -> [Pixel] {
+
+public func imageFromPixels(width: Int, height: Int) -> CIImage? {
+    
     var pixel = Pixel(red: 0, green: 0, blue: 0)
     var pixels = [Pixel](repeating: pixel, count: width * height)
     let lower_left_corner = float3(x: -2.0, y: 1.0, z: -1.0)
@@ -10,24 +12,23 @@ public func makePixelSet(width: Int, _ height: Int) -> [Pixel] {
     let vertical = float3(x: 0, y: -2.0, z: 0)
     let origin = float3()
     
+    // Init scene
+    let world = makeWorldScene()
+    
     DispatchQueue.concurrentPerform(iterations: width) { i in
         for j in 0..<height {
-        
+            
             let u = Float(i) / Float(width)
             let v = Float(j) / Float(height)
             let rayInstanse = ray(origin: origin,
-                        direction: lower_left_corner + u * horizontal + v * vertical)
-            let col = color(for:rayInstanse)
+                                  direction: lower_left_corner + u * horizontal + v * vertical)
+            let col = color(r: rayInstanse, world: world)
             
             pixel = Pixel(red: UInt8(col.x * 255), green: UInt8(col.y * 255), blue: UInt8(col.z * 255))
             pixels[i + j * width] = pixel
         }
     }
     
-    return pixels
-}
-
-public func imageFromPixels(pixels: [Pixel], width: Int, height: Int) -> CIImage? {
     let bitsPerComponent = 8
     let bitsPerPixel = 32
     let rgbColorSpace = CGColorSpaceCreateDeviceRGB()
@@ -50,4 +51,13 @@ public func imageFromPixels(pixels: [Pixel], width: Int, height: Int) -> CIImage
                         intent: .defaultIntent)
     
     return CIImage(cgImage: image!)
+}
+
+func makeWorldScene() -> Hitable {
+    let world = HitableList()
+    let globalSphere = Sphere(c: float3(x: 0, y: -100.5, z: -1), r: 100)
+    world.append(globalSphere)
+    let localSphere = Sphere(c: float3(x: 0, y: 0, z: -1), r: 0.5)
+    world.append(localSphere)
+    return world
 }
