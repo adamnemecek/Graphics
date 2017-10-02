@@ -70,6 +70,17 @@ extension Sphere : Hitable {
         }
         return false
     }
-
-    
 }
+
+
+func randomInUnitSphere() ->  float3 {
+    var p = float3()
+    repeat {
+        p = 2 * float3(x: Float(drand48()),
+                       y: Float(drand48()),
+                       z: Float(drand48())) - float3(x: 1, y: 1, z: 1)
+    } while dot(p, p) >= 1.0
+    
+    return p
+}
+

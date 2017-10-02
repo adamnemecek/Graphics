@@ -7,22 +7,26 @@ public func imageFromPixels(width: Int, height: Int) -> CIImage? {
     
     var pixel = Pixel(red: 0, green: 0, blue: 0)
     var pixels = [Pixel](repeating: pixel, count: width * height)
-    let lower_left_corner = float3(x: -2.0, y: 1.0, z: -1.0)
-    let horizontal = float3(x: 4.0, y: 0, z: 0)
-    let vertical = float3(x: 0, y: -2.0, z: 0)
-    let origin = float3()
+    
+    // Init camera
+    let camera = Camera()
     
     // Init scene
     let world = makeWorldScene()
+    let ns = 10
     
     DispatchQueue.concurrentPerform(iterations: width) { i in
         for j in 0..<height {
+    
+            var col = float3()
+            for _ in 0..<ns {
+                let u = (Float(i) + Float(drand48())) / Float(width)
+                let v = (Float(j) + Float(drand48())) / Float(height)
+                let ray = camera.getRay(for:u, v)
+                col += color(r: ray, world: world)
+            }
             
-            let u = Float(i) / Float(width)
-            let v = Float(j) / Float(height)
-            let rayInstanse = ray(origin: origin,
-                                  direction: lower_left_corner + u * horizontal + v * vertical)
-            let col = color(r: rayInstanse, world: world)
+            col /= float3(Float(ns))
             
             pixel = Pixel(red: UInt8(col.x * 255), green: UInt8(col.y * 255), blue: UInt8(col.z * 255))
             pixels[i + j * width] = pixel

@@ -2,7 +2,7 @@
 
 import Cocoa
 
-let width = 200
-let height = 100
+let width = 400
+let height = 200
 var image = imageFromPixels(width: width, height: height)
 image
