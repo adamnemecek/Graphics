@@ -33,7 +33,7 @@ extension Camera {
 
 func color(r: ray, world: Hitable) -> float3 {
     var rec = HitRecord()
-    if world.hit(by: r, tmin: 0.01, tmax: Float.infinity, rec: &rec) {
+    if world.hit(by: r, tmin: 0.001, tmax: Float.infinity, rec: &rec) {
         let target = rec.p + rec.normal + randomInUnitSphere()
         return 0.5 * color(r:ray(origin: rec.p, direction: target - rec.p),
                            world: world)

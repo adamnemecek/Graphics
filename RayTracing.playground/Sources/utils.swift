@@ -13,7 +13,7 @@ public func imageFromPixels(width: Int, height: Int) -> CIImage? {
     
     // Init scene
     let world = makeWorldScene()
-    let ns = 10
+    let ns = 5
     
     DispatchQueue.concurrentPerform(iterations: width) { i in
         for j in 0..<height {
