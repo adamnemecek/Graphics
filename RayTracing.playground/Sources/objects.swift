@@ -3,7 +3,7 @@ import simd
 
 struct HitRecord {
     var t: Float
-    var p: float3
+    var hitPoint: float3
     var normal: float3
 }
 
@@ -11,7 +11,7 @@ extension HitRecord {
     
     init() {
         t = 0.0
-        p = float3(x: 0.0, y: 0.0, z: 0.0)
+        hitPoint = float3(x: 0.0, y: 0.0, z: 0.0)
         normal = float3(x: 0.0, y: 0.0, z: 0.0)
     }
 }
@@ -63,8 +63,8 @@ extension Sphere : Hitable {
             }
             if tmin < t && t < tmax {
                 rec.t = t
-                rec.p = r.point_at_parameter(rec.t)
-                rec.normal = (rec.p - center) / float3(radius)
+                rec.hitPoint = r.point_at_parameter(rec.t)
+                rec.normal = (rec.hitPoint - center) / float3(radius)
                 return true
             }
         }

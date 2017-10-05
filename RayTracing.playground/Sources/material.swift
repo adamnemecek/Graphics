@@ -16,8 +16,8 @@ class LambertianSurface: MateriaSurface {
     func scatter(rayIn: ray, rec: HitRecord,
                  attenuation: inout float3,
                  scattered:inout ray) -> Bool {
-        let target = rec.p + rec.normal + randomInUnitSphere()
-        scattered = ray(origin: rec.p, direction: target - rec.p)
+        let target = rec.hitPoint + rec.normal + randomInUnitSphere()
+        scattered = ray(origin: rec.hitPoint, direction: target - rec.hitPoint)
         attenuation = albedo
         return true
     }
@@ -41,7 +41,7 @@ class MetalSurface : MateriaSurface {
                  attenuation: inout float3,
                  scattered:inout ray) -> Bool {
         let reflected = reflect(normalize(rayIn.direction), n: rec.normal)
-        scattered = ray(origin: rec.p, direction: reflected + fuzz * randomInUnitSphere())
+        scattered = ray(origin: rec.hitPoint, direction: reflected + fuzz * randomInUnitSphere())
         attenuation = albedo
         return dot(scattered.direction, rec.normal) > 0
     }
