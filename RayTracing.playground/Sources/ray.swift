@@ -31,13 +31,24 @@ extension Camera {
     }
 }
 
-func color(r: ray, world: Hitable) -> float3 {
+func color(r: ray, world: Hitable, depth : Int) -> float3 {
     var rec = HitRecord()
     if world.hit(by: r, tmin: 0.001, tmax: Float.infinity, rec: &rec) {
-        let target = rec.hitPoint + rec.normal + randomInUnitSphere()
-        return 0.5 * color(r:ray(origin: rec.hitPoint, direction: target - rec.hitPoint),
-                           world: world)
+        var scattered = r
+        var attenuantion = float3()
+        
+        if depth < 50 && rec.material.scatter(rayIn:r,
+                                              rec:rec,
+                                              attenuation: &attenuantion,
+                                              scattered: &scattered) {
+            return attenuantion * color(r:scattered,
+                                        world:world,
+                                        depth:depth + 1)
+        } else {
+            return float3(x:0, y:0, z:0)
+        }
     } else {
+        // Calculate background color
         let unit_direction = normalize(r.direction)
         let t = 0.5 * (unit_direction.y + 1)
         return (1.0 - t) * float3(x: 1, y: 1, z: 1) + t * float3(x: 0.5, y: 0.7, z: 1.0)

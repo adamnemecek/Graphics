@@ -5,6 +5,7 @@ struct HitRecord {
     var t: Float
     var hitPoint: float3
     var normal: float3
+    var material: MateriaSurface
 }
 
 extension HitRecord {
@@ -13,6 +14,7 @@ extension HitRecord {
         t = 0.0
         hitPoint = float3(x: 0.0, y: 0.0, z: 0.0)
         normal = float3(x: 0.0, y: 0.0, z: 0.0)
+        material = LambertianSurface(a:hitPoint)
     }
 }
 
@@ -41,9 +43,12 @@ extension HitableList : Hitable {
 class Sphere  {
     var center = float3(x: 0.0, y: 0.0, z: 0.0)
     var radius = Float(0.0)
-    init(c: float3, r: Float) {
-        center = c
-        radius = r
+    var material : MateriaSurface
+    
+    init(center: float3, radius: Float, material : MateriaSurface ) {
+        self.center = center
+        self.radius = radius
+        self.material = material
     }
 }
 

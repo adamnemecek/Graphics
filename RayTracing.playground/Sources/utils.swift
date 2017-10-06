@@ -20,10 +20,10 @@ public func imageFromPixels(width: Int, height: Int) -> CIImage? {
     
             var col = float3()
             for _ in 0..<ns {
-                let u = (Float(i) + Float(drand48())) / Float(width)
-                let v = (Float(j) + Float(drand48())) / Float(height)
+                let u = (Float(i) + 0.5*Float(drand48())) / Float(width)
+                let v = (Float(j) + 0.5*Float(drand48())) / Float(height)
                 let ray = camera.getRay(for:u, v)
-                col += color(r: ray, world: world)
+                col += color(r: ray, world: world, depth : 0)
             }
             
             col /= float3(Float(ns))
@@ -59,9 +59,14 @@ public func imageFromPixels(width: Int, height: Int) -> CIImage? {
 
 func makeWorldScene() -> Hitable {
     let world = HitableList()
-    let globalSphere = Sphere(c: float3(x: 0, y: -100.5, z: -1), r: 100)
+
+    let globalSphere = Sphere(center: float3(x: 0, y: -100.5, z: -1),
+                              radius: 100,
+                              material: LambertianSurface(a: float3(x: 0, y: 0.7, z: 0.3)))
     world.append(globalSphere)
-    let localSphere = Sphere(c: float3(x: 0, y: 0, z: -1), r: 0.5)
+    let localSphere = Sphere(center: float3(x: 0, y: 0, z: -1),
+                             radius: 0.5,
+                             material:MetalSurface(a: float3(x: 0.8, y: 0.6, z: 0.2), f: 0.7))
     world.append(localSphere)
     return world
 }
