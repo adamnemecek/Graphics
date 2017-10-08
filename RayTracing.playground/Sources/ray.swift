@@ -36,7 +36,7 @@ func color(r: ray, world: Hitable, depth : Int) -> float3 {
     if world.hit(by: r, tmin: 0.001, tmax: Float.infinity, rec: &rec) {
         var scattered = r
         var attenuantion = float3()
-        
+
         if depth < 50 && rec.material.scatter(rayIn:r,
                                               rec:rec,
                                               attenuation: &attenuantion,

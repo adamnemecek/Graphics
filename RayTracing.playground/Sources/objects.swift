@@ -1,6 +1,21 @@
 import Foundation
 import simd
 
+
+public struct Pixel {
+    var r: UInt8
+    var g: UInt8
+    var b: UInt8
+    var a: UInt8
+    
+    init(red: UInt8, green: UInt8, blue: UInt8) {
+        r = red
+        g = green
+        b = blue
+        a = 255
+    }
+}
+
 struct HitRecord {
     var t: Float
     var hitPoint: float3
@@ -14,7 +29,7 @@ extension HitRecord {
         t = 0.0
         hitPoint = float3(x: 0.0, y: 0.0, z: 0.0)
         normal = float3(x: 0.0, y: 0.0, z: 0.0)
-        material = LambertianSurface(a:hitPoint)
+        material = MetalSurface(a: float3(), f: Float())
     }
 }
 
@@ -70,6 +85,7 @@ extension Sphere : Hitable {
                 rec.t = t
                 rec.hitPoint = r.point_at_parameter(rec.t)
                 rec.normal = (rec.hitPoint - center) / float3(radius)
+                rec.material = self.material
                 return true
             }
         }

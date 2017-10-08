@@ -23,7 +23,7 @@ public func imageFromPixels(width: Int, height: Int) -> CIImage? {
                 let u = (Float(i) + 0.5*Float(drand48())) / Float(width)
                 let v = (Float(j) + 0.5*Float(drand48())) / Float(height)
                 let ray = camera.getRay(for:u, v)
-                col += color(r: ray, world: world, depth : 0)
+                col += color(r: ray, world: world, depth : 5)
             }
             
             col /= float3(Float(ns))
@@ -62,7 +62,7 @@ func makeWorldScene() -> Hitable {
 
     let globalSphere = Sphere(center: float3(x: 0, y: -100.5, z: -1),
                               radius: 100,
-                              material: LambertianSurface(a: float3(x: 0, y: 0.7, z: 0.3)))
+                              material: LambertianSurface(a: float3(x: 0.1, y: 0.7, z: 0.3)))
     world.append(globalSphere)
     let localSphere = Sphere(center: float3(x: 0, y: 0, z: -1),
                              radius: 0.5,
