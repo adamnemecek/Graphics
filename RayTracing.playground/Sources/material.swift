@@ -47,3 +47,15 @@ class MetalSurface : MateriaSurface {
     }
 }
 
+
+struct Dielectric : MateriaSurface {
+    
+    
+    func scatter(rayIn: ray, rec: HitRecord,
+                 attenuation: inout float3,
+                 scattered:inout ray) -> Bool {
+        
+        return true
+    }
+}
+
