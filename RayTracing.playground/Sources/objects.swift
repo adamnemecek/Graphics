@@ -29,7 +29,8 @@ extension HitRecord {
         t = 0.0
         hitPoint = float3(x: 0.0, y: 0.0, z: 0.0)
         normal = float3(x: 0.0, y: 0.0, z: 0.0)
-        material = MetalSurface(a: float3(), f: Float())
+        material = MetalSurface(albedo: float3(),
+                                fuzz: Float())
     }
 }
 

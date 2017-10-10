@@ -12,7 +12,9 @@ public func imageFromPixels(width: Int, height: Int) -> CIImage? {
     let camera = Camera()
     
     // Init scene
-    let world = makeWorldScene()
+    let world = HitableList()
+    hitableObjects().forEach { world.append($0) }
+    
     let ns = 5
     
     DispatchQueue.concurrentPerform(iterations: width) { i in
@@ -57,16 +59,20 @@ public func imageFromPixels(width: Int, height: Int) -> CIImage? {
     return CIImage(cgImage: image!)
 }
 
-func makeWorldScene() -> Hitable {
-    let world = HitableList()
 
+func hitableObjects() -> [Hitable] {
     let globalSphere = Sphere(center: float3(x: 0, y: -100.5, z: -1),
                               radius: 100,
                               material: LambertianSurface(a: float3(x: 0.1, y: 0.7, z: 0.3)))
-    world.append(globalSphere)
+    
     let localSphere = Sphere(center: float3(x: 0, y: 0, z: -1),
                              radius: 0.5,
-                             material:MetalSurface(a: float3(x: 0.8, y: 0.6, z: 0.2), f: 0.7))
-    world.append(localSphere)
-    return world
+                             material: MetalSurface(albedo: float3(x: 0.8, y: 0.6, z: 0.2),
+                                                    fuzz: 0.7))
+    
+    let anotherLocalSphere = Sphere(center:float3(x: -1, y: 0, z: -1),
+                                    radius:0.7,
+                                    material : DielectricSurface())
+    
+    return [globalSphere, localSphere, anotherLocalSphere]
 }

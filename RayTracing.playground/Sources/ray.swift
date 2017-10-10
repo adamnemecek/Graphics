@@ -31,6 +31,10 @@ extension Camera {
     }
 }
 
+
+// Depth of reflection is described there:
+// https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-//fresnel
+
 func color(r: ray, world: Hitable, depth : Int) -> float3 {
     var rec = HitRecord()
     if world.hit(by: r, tmin: 0.001, tmax: Float.infinity, rec: &rec) {
