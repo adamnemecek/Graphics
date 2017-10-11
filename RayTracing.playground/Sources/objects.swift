@@ -20,7 +20,7 @@ struct HitRecord {
     var t: Float
     var hitPoint: float3
     var normal: float3
-    var material: MateriaSurface
+    var material: MaterialSurface
 }
 
 extension HitRecord {
@@ -59,9 +59,9 @@ extension HitableList : Hitable {
 class Sphere  {
     var center = float3(x: 0.0, y: 0.0, z: 0.0)
     var radius = Float(0.0)
-    var material : MateriaSurface
+    var material : MaterialSurface
     
-    init(center: float3, radius: Float, material : MateriaSurface ) {
+    init(center: float3, radius: Float, material : MaterialSurface ) {
         self.center = center
         self.radius = radius
         self.material = material

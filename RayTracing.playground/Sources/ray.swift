@@ -19,6 +19,33 @@ struct Camera {
 
 extension Camera {
     
+    // Placing camera described there :
+    // https://www.scratchapixel.com/lessons/mathematics-physics-for-computer-graphics/lookat-function
+    
+    init(lookFrom : float3,
+         lookAt:float3,
+         upVec : float3,
+         forward : Float,
+         aspect : Float) {
+        
+        let theta = forward * Float(Double.pi) / 180
+        let half_height = tan(theta/2)
+        let half_width = aspect * half_height
+        
+        let w = normalize(lookFrom - lookAt)
+        let u = normalize(cross(upVec, w))
+        let v = cross(w, u)
+        
+        // Init basic property
+        origin = lookFrom
+        lower_left_corner = origin - half_width * u - half_height * v - w
+        horizontal = 2 * half_width * u
+        vertical = 2 * half_height * v
+    }
+}
+
+extension Camera {
+    
     init() {
         lower_left_corner = float3(x: -2.0, y: 1.0, z: -1.0)
         horizontal = float3(x: 4.0, y: 0, z: 0)

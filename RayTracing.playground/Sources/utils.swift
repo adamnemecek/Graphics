@@ -9,7 +9,7 @@ public func imageFromPixels(width: Int, height: Int) -> CIImage? {
     var pixels = [Pixel](repeating: pixel, count: width * height)
     
     // Init camera
-    let camera = Camera()
+    let camera = makeCamera(width:width, height : height)
     
     // Init scene
     let world = HitableList()
@@ -57,6 +57,19 @@ public func imageFromPixels(width: Int, height: Int) -> CIImage? {
                         intent: .defaultIntent)
     
     return CIImage(cgImage: image!)
+}
+
+func makeCamera(width:Int, height:Int) -> Camera {
+    // Init camera
+    let lookFrom = float3(0, 1, -4)
+    let lookAt = float3()
+    let vup = float3(0, -1, 0)
+    let camera = Camera(lookFrom: lookFrom,
+                        lookAt: lookAt,
+                        upVec: vup,
+                        forward: 50,
+                        aspect: Float(width) / Float(height))
+    return camera
 }
 
 

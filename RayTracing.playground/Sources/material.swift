@@ -1,13 +1,13 @@
 import Foundation
 import simd
 
-protocol MateriaSurface {
+protocol MaterialSurface {
     func scatter(rayIn: ray, rec: HitRecord,
                  attenuation: inout float3,
                  scattered:inout ray) -> Bool
 }
 
-class LambertianSurface: MateriaSurface {
+class LambertianSurface: MaterialSurface {
     var albedo: float3
     init(a: float3) {
         albedo = a
@@ -24,7 +24,7 @@ class LambertianSurface: MateriaSurface {
 }
 
 
-class MetalSurface : MateriaSurface {
+class MetalSurface : MaterialSurface {
     var albedo: float3
     var fuzz: Float
     
@@ -44,7 +44,7 @@ class MetalSurface : MateriaSurface {
 }
 
 
-struct DielectricSurface : MateriaSurface {
+struct DielectricSurface : MaterialSurface {
     
     func scatter(rayIn: ray, rec: HitRecord,
                  attenuation: inout float3,
