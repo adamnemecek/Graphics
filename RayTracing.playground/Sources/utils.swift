@@ -15,7 +15,7 @@ public func imageFromPixels(width: Int, height: Int) -> CIImage? {
     let world = HitableList()
     hitableObjects().forEach { world.append($0) }
     
-    let ns = 5
+    let ns = 100
     
     DispatchQueue.concurrentPerform(iterations: width) { i in
         for j in 0..<height {
