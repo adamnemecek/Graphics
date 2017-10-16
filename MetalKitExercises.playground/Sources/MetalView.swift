@@ -66,6 +66,8 @@ public class MetalView : NSObject, MTKViewDelegate {
     }
 }
 
+// Read https://www.scratchapixel.com/lessons/3d-basic-rendering/computing-pixel-coordinates-of-3d-point/mathematics-computing-2d-coordinates-of-3d-points
+
 extension MetalView {
     
     func makeBuffers(for gpuDevice : MTLDevice) -> (MTLBuffer?,MTLBuffer?, MTLBuffer?)  {
